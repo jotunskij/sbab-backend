@@ -1,5 +1,8 @@
 # Backend for SBAB code assignment
 
+## Requirements
+* Env var `API_KEY` set to Trafiklab API key
+
 ## Time keeping
 15/9:
 45 min - Setting up npm and Java for Windows and VSCode (.NET configed machine)
