@@ -13,6 +13,7 @@ import se.sbab.sbabbe.DTOs.StopPoint;
 @Repository
 public class StopsAndLinesRepository implements IStopsAndLinesRepository {
 
+    // Read API_KEY from either config or env
     @Value("${API_KEY}")
     private String apiKey;
     private ApiClient apiClient;

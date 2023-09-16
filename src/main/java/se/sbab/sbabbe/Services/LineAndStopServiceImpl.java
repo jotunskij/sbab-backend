@@ -2,6 +2,7 @@ package se.sbab.sbabbe.Services;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Collections;
 
 import org.springframework.stereotype.Service;
@@ -15,7 +16,8 @@ import se.sbab.sbabbe.Repositories.IStopsAndLinesRepository;
 @Service
 public class LineAndStopServiceImpl implements ILineAndStopService {
 
-    private IStopsAndLinesRepository repository;
+    private final IStopsAndLinesRepository repository;
+    private final Integer ResponseLimit = 10;
 
     public LineAndStopServiceImpl(IStopsAndLinesRepository repository) {
         this.repository = repository;
@@ -23,67 +25,59 @@ public class LineAndStopServiceImpl implements ILineAndStopService {
 
     @Override
     public List<TopLine> getTop10Lines() {
-        BaseResponse<StopPoint> stops = repository.getAllStops();
-        List<StopPoint> distictStops = stops.responseData.result.stream()
-            // Remove duplicates created by DirectionCode
-            .distinct()
-            .toList();
-
         BaseResponse<LineStop> lineStops = repository.getLineStops();
         List<TopLine> topLines = new ArrayList<TopLine>();
 
+        List<StopPoint> distictStops = getDistinctStops();
+
         for (var lineStop : lineStops.responseData.result) {
-            var stop = distictStops.stream()
-                .filter(s -> s.stopPointNumber.equals(lineStop.journeyPatternPointNumber))
-                .findFirst();
+            Optional<StopPoint> stop = getStopPointForLineNumber(
+                distictStops, 
+                lineStop.journeyPatternPointNumber
+            );
+
             if (!stop.isPresent()) {
                 continue;
             }
-            var stopName = stop.get().stopPointName;
-            if (!topLines.stream().anyMatch(l -> l.lineNumber.equals(lineStop.lineNumber))) {
+            String stopName = stop.get().stopPointName;
+            if (!lineNumberAlreadyInList(topLines, lineStop.lineNumber)) {
                 topLines.add(new TopLine(lineStop.lineNumber));
             }
             else {
-                var matchedLine = topLines.stream()
-                    .filter(l -> l.lineNumber.equals(lineStop.lineNumber))
-                    .findFirst()
-                    .get();
+                TopLine matchedLine = getTopLineWithLineNumber(topLines, lineStop.lineNumber);
                 topLines.get(topLines.indexOf(matchedLine)).stopNames.add(stopName);
             }
         }
 
         // Sort by lines array size, and limit to 10
         Collections.sort(topLines);
-        return topLines.subList(0, 10);
-            
+        return topLines.subList(0, ResponseLimit - 1);
+    }
 
-        // Code below left as history for first attempt with only streams
+    private TopLine getTopLineWithLineNumber(List<TopLine> list, Integer lineNumber) {
+        return list.stream()
+                    .filter(l -> l.lineNumber.equals(lineNumber))
+                    .findFirst()
+                    .get();
+    }
 
-        /*lineStops.responseData.result.stream()
-            .forEach(ls -> {
-                stopsPerLine.merge(ls.lineNumber, 
-                    Arrays.asList(ls.journeyPatternPointNumber),
-                    (oldVal, newVal) -> {
-                        oldVal.add(ls.journeyPatternPointNumber);
-                        return oldVal;
-                    });
-            });*/
-        
-        /*Map<Integer, Integer> counts = new HashMap<Integer, Integer>();
-        // Calculate number of stops per line
-        lineStops.responseData.result.stream()
-            .forEach(ls -> counts.merge(ls.lineNumber, 1, Integer::sum));
-        // Sort our hashmap
-        Map<Integer, Integer> sortedCounts = counts.entrySet().stream()
-            .sorted(Comparator.comparingInt(Map.Entry::getValue))
-            .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, 
-                (k,v)->k, LinkedHashMap::new));
-        sortedCounts.entrySet().stream()
-            .limit(10)
-            .map(e -> {
-                String stopName = stops.responseData.result.stream()
-                    .filter(s -> s.stopPointNumber.equals(e.))
-            })*/
+    private Boolean lineNumberAlreadyInList(List<TopLine> list, Integer lineNumber) {
+        return list.stream()
+            .anyMatch(l -> l.lineNumber.equals(lineNumber));
+    }
+
+    private Optional<StopPoint> getStopPointForLineNumber(List<StopPoint> stops, Integer lineNumber) {
+        return stops.stream()
+                .filter(s -> s.stopPointNumber.equals(lineNumber))
+                .findFirst();
+    }
+
+    private List<StopPoint> getDistinctStops() {
+        BaseResponse<StopPoint> stops = repository.getAllStops();
+        return stops.responseData.result.stream()
+            // Remove duplicates created by DirectionCode
+            .distinct()
+            .toList();
     }
     
 }
