@@ -8,19 +8,19 @@
 
 ## Time keeping (BE only)
 15/9:
-45 min - Setting up npm and Java for Windows and VSCode (.NET configed machine)
-45 min - Getting API key, reading API spec, getting API calls to work and basic return structure for BE
+* 45 min - Setting up npm and Java for Windows and VSCode (.NET configed machine)
+* 45 min - Getting API key, reading API spec, getting API calls to work and basic return structure for BE
 
 16/9:
-15 min - Documentation
-60 min - Coding (API calls, mapping calls to assigment reqs)
-60 min - Coding (working with streams, maps, lists)
-30 min - Coding (first working BE version, remove duplicate stops)
-20 min - Coding (refactoring, comments)
+* 15 min - Documentation
+* 60 min - Coding (API calls, mapping calls to assigment reqs)
+* 60 min - Coding (working with streams, maps, lists)
+* 30 min - Coding (first working BE version, remove duplicate stops)
+* 20 min - Coding (refactoring, comments)
 
-Total: 4 hr 35 min
-Of which was setup: 1 hr 30 min
-Of which was coding: 3 hr 5 min
+* Total: 4 hr 35 min
+* Of which was setup: 1 hr 30 min
+* Of which was coding: 3 hr 5 min
 
 ## Tech
 * Java
