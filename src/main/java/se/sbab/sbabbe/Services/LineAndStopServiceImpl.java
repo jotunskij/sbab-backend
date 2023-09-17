@@ -32,7 +32,7 @@ public class LineAndStopServiceImpl implements ILineAndStopService {
         // Get all stop names
         List<StopPoint> distictStops = getDistinctStops();
 
-        // Loop every line
+        // Loop every line -> stop connection
         for (var lineStop : lineStops.responseData.result) {
             // Get the corresponding StopPoint for this stop nr
             Optional<StopPoint> stop = getStopPointForLineNumber(
