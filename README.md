@@ -3,7 +3,10 @@
 ## Requirements
 * Env var `API_KEY` set to Trafiklab API key
 
-## Time keeping
+## Added dependencies
+* spring-boot-starter-webflux (for WebClient)
+
+## Time keeping (BE only)
 15/9:
 45 min - Setting up npm and Java for Windows and VSCode (.NET configed machine)
 45 min - Getting API key, reading API spec, getting API calls to work and basic return structure for BE
@@ -13,16 +16,15 @@
 60 min - Coding (API calls, mapping calls to assigment reqs)
 60 min - Coding (working with streams, maps, lists)
 30 min - Coding (first working BE version, remove duplicate stops)
-X min - Coding (BE: refactoring, comments, FE: project startup)
+20 min - Coding (refactoring, comments)
 
-Total: X hr Y min
+Total: 4 hr 35 min
 Of which was setup: 1 hr 30 min
-Of which was coding: X hr Y min
+Of which was coding: 3 hr 5 min
 
 ## Tech
 * Java
 * Maven
-* React
 
 ## Assumptions
 * Number of stops will be interpreted as the number of distinct stops by name. Names with the same name but different DirectionCode will not be counted twice.

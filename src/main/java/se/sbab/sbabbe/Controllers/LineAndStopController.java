@@ -2,6 +2,7 @@ package se.sbab.sbabbe.Controllers;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -17,6 +18,7 @@ public class LineAndStopController {
         this.service = service;
     }
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @GetMapping(value = "/top")
     public List<TopLine> getTop10Lines() {
         return service.getTop10Lines();
