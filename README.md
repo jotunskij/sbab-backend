@@ -27,7 +27,7 @@
 * Maven
 
 ## Assumptions
-* Number of stops will be interpreted as the number of distinct stops by name. Names with the same name but different DirectionCode will not be counted twice.
+* Number of stops will be interpreted as the number of distinct stops by name. Stops with the same name but different DirectionCode will not be counted twice.
 
 ## Improvements/things left out
 * Cache like.. everything (violates assignment spec)
