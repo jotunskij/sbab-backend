@@ -34,6 +34,7 @@
 * Use `Use Accept-Encoding gzip, deflate` (as stated by API docs) with WebClient
 * API call error handling
 * Tests - most critical for `LineAndStopServiceImpl.java`
+* Remove `block()` for API call, and use `subscribe()` instead
 
 ## Reflections
 * Wierd API
